@@ -9,8 +9,7 @@ class FacebookAppEvents {
   static const _channel = MethodChannel(channelName);
 
   // See: https://github.com/facebook/facebook-android-sdk/blob/master/facebook-core/src/main/java/com/facebook/appevents/AppEventsConstants.java
-  static const eventNameCompletedRegistration =
-      'fb_mobile_complete_registration';
+  static const eventNameCompletedRegistration = 'fb_mobile_complete_registration';
   static const eventNameViewedContent = 'fb_mobile_content_view';
   static const eventNameRated = 'fb_mobile_rate';
   static const eventNameInitiatedCheckout = 'fb_mobile_initiated_checkout';
@@ -20,6 +19,7 @@ class FacebookAppEvents {
   static const eventNameStartTrial = "StartTrial";
   static const eventNameAdImpression = "AdImpression";
   static const eventNameAdClick = "AdClick";
+  static const eventNameSearch = "fb_mobile_search";
 
   static const _paramNameValueToSum = "_valueToSum";
   static const paramNameAdType = "fb_ad_type";
@@ -30,6 +30,7 @@ class FacebookAppEvents {
   static const paramNameNumItems = "fb_num_items";
   static const paramValueYes = "1";
   static const paramValueNo = "0";
+  static const paramNameName = "fb_content_name";
 
   /// Parameter key used to specify a generic content type/family for the logged event, e.g.
   /// "music", "photo", "video".  Options to use will vary depending on the nature of the app.
@@ -44,6 +45,10 @@ class FacebookAppEvents {
   /// Parameter key used to specify an ID for the specific piece of content being logged about.
   /// This could be an EAN, article identifier, etc., depending on the nature of the app.
   static const paramNameContentId = "fb_content_id";
+
+  static const paramNameSearchString = "fb_search_string";
+
+  static const paramNameContentCategory = "fb_content_category";
 
   /// Clears the current user data
   Future<void> clearUserData() {
@@ -172,6 +177,8 @@ class FacebookAppEvents {
     String? type,
     String? currency,
     double? price,
+    String? contentName,
+    String? contentCategory,
   }) {
     return logEvent(
       name: eventNameViewedContent,
@@ -180,6 +187,8 @@ class FacebookAppEvents {
         paramNameContentId: id,
         paramNameContentType: type,
         paramNameCurrency: currency,
+        paramNameName: contentName,
+        paramNameContentCategory: contentCategory,
       },
       valueToSum: price,
     );
@@ -194,6 +203,8 @@ class FacebookAppEvents {
     required String type,
     required String currency,
     required double price,
+    required String contentName,
+    required String contentCategory,
   }) {
     return logEvent(
       name: eventNameAddedToCart,
@@ -202,9 +213,29 @@ class FacebookAppEvents {
         paramNameContentId: id,
         paramNameContentType: type,
         paramNameCurrency: currency,
+        paramNameName: contentName,
+        paramNameContentCategory: contentCategory,
       },
       valueToSum: price,
     );
+  }
+
+  Future<void> logSearch({
+    String? contentCategory,
+    String? contentType,
+    String? currency,
+    String? searchString,
+    Map<String, dynamic>? content,
+    String? id,
+  }) {
+    return logEvent(name: eventNameSearch, parameters: {
+      if (content?.isNotEmpty == true) paramNameContent: json.encode(content),
+      paramNameContentId: id,
+      paramNameContentType: contentType,
+      paramNameSearchString: searchString,
+      paramNameContentCategory: contentCategory,
+      paramNameCurrency: currency,
+    });
   }
 
   /// Log this event when the user has added item to cart
@@ -275,6 +306,10 @@ class FacebookAppEvents {
     String? contentId,
     int? numItems,
     bool paymentInfoAvailable = false,
+    String? orderId,
+    Map<String, dynamic>? content,
+    String? contentName,
+    String? contentCategory,
   }) {
     return logEvent(
       name: eventNameInitiatedCheckout,
@@ -284,8 +319,11 @@ class FacebookAppEvents {
         paramNameContentId: contentId,
         paramNameNumItems: numItems,
         paramNameCurrency: currency,
-        paramNamePaymentInfoAvailable:
-            paymentInfoAvailable ? paramValueYes : paramValueNo,
+        paramNamePaymentInfoAvailable: paymentInfoAvailable ? paramValueYes : paramValueNo,
+        paramNameOrderId: orderId,
+        if (content?.isNotEmpty == true) paramNameContent: jsonEncode(content!),
+        paramNameName: contentName,
+        paramNameContentCategory: contentCategory,
       },
     );
   }
