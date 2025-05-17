@@ -1,6 +1,7 @@
 # facebook_app_events
 
-[![pub package](https://img.shields.io/pub/v/facebook_app_events.svg)](https://pub.dartlang.org/packages/facebook_app_events)
+[![pub package](https://img.shields.io/pub/v/facebook_app_events.svg)](https://pub.dartlang.org/packages/facebook_app_events) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202%2E0-lightgrey.svg)](https://github.com/TheFireCo/genkit-plugins/blob/main/LICENSE)
+
 
 Flutter plugin for [Facebook App Events](https://developers.facebook.com/docs/app-events).
 
@@ -19,13 +20,15 @@ You must first create an app at Facebook for developers: https://developers.face
 
 ### Configure Android
 
-Read through the "[Getting Started with App Events for Android](https://developers.facebook.com/docs/app-events/getting-started-app-events-android)" tutorial and in particular, follow [step 3](https://developers.facebook.com/docs/app-events/getting-started-app-events-android#step-3--integrate-the-facebook-sdk-in-your-android-app) by adding the following into `android/app/src/main/res/values/strings.xml` (or into respective `debug` or `release` build flavor)
+Read through the "[Get Started with App Events (Android)](https://developers.facebook.com/docs/app-events/getting-started-app-events-android)" and "[Getting Started with the Facebook SDK for Android](https://developers.facebook.com/docs/android/getting-started)" tutorial. In particular, follow [Update Your Manifest](https://developers.facebook.com/docs/android/getting-started#add-app_id) step by adding the following into `android/app/src/main/res/values/strings.xml` (or into respective `debug` or `release` build flavor)  
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="facebook_app_id">[APP_ID]</string>
   <string name="facebook_client_token">[CLIENT_TOKEN]</string>
+  <string name="fb_login_protocol_scheme">fb[APP_ID]</string>
+  <string name="app_name">[APP_NAME]</string>
 </resources>
 ```
 
@@ -104,11 +107,9 @@ with your other plugins or dependencies.
 
 
 ## Getting involved
-First of all, thank you for even considering to get involved. You are a real super :star:  and we :heart:  you!
+First of all, thank you for even considering to get involved. You are a real super :star: and we :heart: you! 
 
-### Reporting bugs and issues
-Use the configured [Github issue report template](https://github.com/oddbit/flutter_facebook_app_events/issues/new?assignees=&labels=&template=bug_report.md&title=) when reporting an issue. Make sure to state your observations and expectations
-as objectively and informative as possible so that we can understand your need and be able to troubleshoot.
+Please read our [contribution guideline](CONTRIBUTING.md) for more info.
 
 ### Discussions and ideas
 We're happy to discuss and talk about ideas in the
